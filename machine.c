@@ -6,8 +6,8 @@ FILE * fp;
 int program [MAX];
 int idx;
 
-//#define DEBUG printf
-#define DEBUG //
+#define DEBUG printf
+//#define DEBUG //
 
 
 int getnum(){
@@ -33,7 +33,7 @@ int runcmd(){
 	DEBUG("Command:%d\n",x);
 	switch (x){
 	case 0:
-	  DEBUG("Halt\n");
+	  printf("Halt\n");
 	  return 1;
 	  break;
 
@@ -41,8 +41,26 @@ int runcmd(){
 	  //jmp: 6 a
 	  //jump to <a>
 	  idx=getnum();
+	DEBUG("jmp:%d\n",idx);
 	  break;
 	
+	case 7:
+	  //jt: 7 a b
+	  //if <a> is nonzero, jump to <b>
+	  a=getnum();
+	  b=getnum();
+	  if (a!=0) idx=b;
+	DEBUG("jt:%d,%d\n",a,b);
+	  break;
+
+	case 81:
+	  //jf: 8 a b
+	  //if <a> is zero, jump to <b>
+	  a=getnum();
+	  b=getnum();
+	  if (a==0) idx=b;
+	DEBUG("jf:%d,%d\n",a,b);
+	  break;
 	case 19:
 	  //out: 19 a
 	  //write the character represented by ascii code <a> to the terminal
@@ -71,15 +89,10 @@ int runcmd(){
 	case 5:
 	  //gt: 5 a b c
 	  //set <a> to 1 if <b> is greater than <c>; set it to 0 otherwise
-	case 7:
-	  //jt: 7 a b
-	  //if <a> is nonzero, jump to <b>
-	case 8:
-	  //jf: 8 a b
-	  //if <a> is zero, jump to <b>
 	case 9:
 	  //add: 9 a b c
 	  //assign into <a> the sum of <b> and <c> (modulo 32768)
+
 	case 10:
 	  //mult: 10 a b c
 	  //store into <a> the product of <b> and <c> (modulo 32768)
