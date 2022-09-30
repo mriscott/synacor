@@ -2,22 +2,42 @@
 
 FILE * fp;
 
-#define MAX (30050)
-int program [MAX];
+#define MAX 30050
+#define MAXNUM 32767
+#define MAXREG 32775
+unsigned int program [MAX];
 int idx;
+unsigned int reg[8];
 
+#define DBG 1
+#ifdef DBG
 #define DEBUG printf
-//#define DEBUG //
+#else
+#define DEBUG //
+#endif
 
-
-int getnum(){
+int getreg(){
   int num=program[idx];
   idx++;
+  if(num>MAXNUM && num <=MAXREG)
+    return  num-MAXNUM;
+  return -1;
+}
+
+unsigned int getnum(){
+  int num=program[idx];
+  idx++;
+  if(num>MAXNUM && num <=MAXREG)
+    num = reg[num-MAXNUM];
+  if(num>MAXREG)
+    num = -1;
   return num;
 }
 
-short readnum(){
-	short code=0;
+
+
+unsigned short readnum(){
+	unsigned short code=0;
 	if(fread(&code,sizeof(short),1,fp)==0){
 	  return -1;
 	}
@@ -28,9 +48,9 @@ short readnum(){
 
 // return: 0 - ok, 1 - halt, 2 - error
 int runcmd(){
-	int a,b,c;
-	int x=getnum();
-	DEBUG("Command:%d\n",x);
+	unsigned int a,b,c;
+	unsigned int x=getnum();
+	//if (x!=19) DEBUG("Command:%d\n",x);
 	switch (x){
 	case 0:
 	  printf("Halt\n");
@@ -40,6 +60,7 @@ int runcmd(){
 	case 6:
 	  //jmp: 6 a
 	  //jump to <a>
+	DEBUG("idx:%d\n",idx);
 	  idx=getnum();
 	DEBUG("jmp:%d\n",idx);
 	  break;
@@ -47,19 +68,21 @@ int runcmd(){
 	case 7:
 	  //jt: 7 a b
 	  //if <a> is nonzero, jump to <b>
+	DEBUG("idx:%d\n",idx);
 	  a=getnum();
 	  b=getnum();
 	  if (a!=0) idx=b;
-	DEBUG("jt:%d,%d\n",a,b);
+	DEBUG("jt:%u,%u\n",a,b);
 	  break;
 
-	case 81:
+	case 8:
 	  //jf: 8 a b
 	  //if <a> is zero, jump to <b>
+	DEBUG("idx:%d\n",idx);
 	  a=getnum();
 	  b=getnum();
 	  if (a==0) idx=b;
-	DEBUG("jf:%d,%d\n",a,b);
+	DEBUG("jf:%u,%u\n",a,b);
 	  break;
 	case 19:
 	  //out: 19 a
@@ -70,7 +93,7 @@ int runcmd(){
 	
 	case 21:
 	  //noop
-	  printf("noop\n");
+	  DEBUG("noop\n");
 	  break;
 
 	  // unimplemented codes here
@@ -143,7 +166,7 @@ int main(int c, char ** v){
 	printf("Starting ... \n");
 	printf("Reading into array\n");
 	fp=fopen("challenge.bin","rb");
-	int x=0;
+	unsigned int x=0;
 	for (int i=0;i<MAX;i++)
 	{
 	  x=readnum();
