@@ -20,7 +20,8 @@ uint16_t getreg(){
   uint16_t num=program[idx];
   idx++;
   if(num>MAXNUM && num <=MAXREG)
-    return  num-MAXNUM;
+    return  num-MAXNUM-1;
+  printf("Invalid reg\n");
   return -1;
 }
 
