@@ -29,7 +29,7 @@ uint16_t getnum(){
   uint16_t num=program[idx];
   idx++;
   if(num>MAXNUM && num <=MAXREG){
-    DEBUG("Reg %u\n",(num-MAXNUM));
+    DEBUG("Reg %u\n",(num-MAXNUM-1));
     num = reg[num-MAXNUM];
    }	
   if(num>MAXREG){
@@ -195,6 +195,9 @@ int main(int c, char ** v){
 	printf("Starting ... \n");
 	printf("Reading into array\n");
 	fp=fopen("challenge.bin","rb");
+	for (int i=0;i<8;i++){
+		reg[i]=0;
+	}
 	uint16_t x=0;
 	for (int i=0;i<MAX;i++)
 	{
