@@ -30,7 +30,7 @@ uint16_t getnum(){
   idx++;
   if(num>MAXNUM && num <=MAXREG){
     DEBUG("Reg %u\n",(num-MAXNUM-1));
-    num = reg[num-MAXNUM];
+    num = reg[num-MAXNUM-1];
    }	
   if(num>MAXREG){
     printf("Invalid num\n");
