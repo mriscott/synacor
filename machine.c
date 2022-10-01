@@ -66,6 +66,15 @@ int runcmd(){
 	  reg[a]=b;
 	  break;
 
+	case 4:
+	  //eq: 4 a b c
+	  //set <a> to 1 if <b> is equal to <c>; set it to 0 otherwise
+	  a=getreg();
+	  b=getnum();
+	  c=getnum();
+	  reg[a]=b==c?1:0;
+	  break;
+
 	case 6:
 	  //jmp: 6 a
 	  //jump to <a>
@@ -127,9 +136,6 @@ int runcmd(){
 	case 3:
 	  //pop: 3 a
 	  //remove the top element from the stack and write it into <a>; empty stack = error
-	case 4:
-	  //eq: 4 a b c
-	  //set <a> to 1 if <b> is equal to <c>; set it to 0 otherwise
 	case 5:
 	  //gt: 5 a b c
 	  //set <a> to 1 if <b> is greater than <c>; set it to 0 otherwise
