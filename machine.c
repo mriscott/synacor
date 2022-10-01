@@ -57,6 +57,15 @@ int runcmd(){
 	  return 1;
 	  break;
 
+	case 1:
+	  //set: 1 a b
+	  //  set register <a> to the value of <b>
+	  a=getreg();
+	  b=getnum();
+	  DEBUG ("Setting %u to %u\n",a,b);
+	  reg[a]=b;
+	  break;
+
 	case 6:
 	  //jmp: 6 a
 	  //jump to <a>
@@ -97,9 +106,6 @@ int runcmd(){
 	  break;
 
 	  // unimplemented codes here
-	case 1:
-	  //set: 1 a b
-	  //  set register <a> to the value of <b>
 	case 2:
 	  //push: 2 a
 	  //push <a> onto the stack
