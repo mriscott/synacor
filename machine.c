@@ -10,7 +10,6 @@ uint16_t program [MAX];
 uint16_t idx;
 uint16_t reg[8];
 
-#define DBG 1
 #ifdef DBG
 #define DEBUG printf
 #else
