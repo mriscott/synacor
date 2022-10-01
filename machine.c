@@ -48,7 +48,7 @@ unsigned short readnum(){
 
 // return: 0 - ok, 1 - halt, 2 - error
 int runcmd(){
-	unsigned int a,b,c;
+	unsigned int a,b,c,d;
 	unsigned int x=getnum();
 	//if (x!=19) DEBUG("Command:%d\n",x);
 	switch (x){
@@ -62,7 +62,7 @@ int runcmd(){
 	  //  set register <a> to the value of <b>
 	  a=getreg();
 	  b=getnum();
-	  DEBUG ("Setting %u to %u\n",a,b);
+	  DEBUG ("Set %u  %u\n",a,b);
 	  reg[a]=b;
 	  break;
 
@@ -93,6 +93,21 @@ int runcmd(){
 	  if (a==0) idx=b;
 	DEBUG("jf:%u,%u\n",a,b);
 	  break;
+
+	case 9:
+	  //add: 9 a b c
+	  //assign into <a> the sum of <b> and <c> (modulo 32768)
+	  a=getreg();
+	  b=getnum();
+	  c=getnum();
+	  d=b+c;
+	  d=d%32768;
+	  DEBUG("add:%u,%u,%u : %u->%u\n",a,b,c,a,d);
+	  reg[a]=d;
+	  break;
+
+	  
+
 	case 19:
 	  //out: 19 a
 	  //write the character represented by ascii code <a> to the terminal
@@ -118,9 +133,6 @@ int runcmd(){
 	case 5:
 	  //gt: 5 a b c
 	  //set <a> to 1 if <b> is greater than <c>; set it to 0 otherwise
-	case 9:
-	  //add: 9 a b c
-	  //assign into <a> the sum of <b> and <c> (modulo 32768)
 
 	case 10:
 	  //mult: 10 a b c
