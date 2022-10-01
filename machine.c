@@ -7,7 +7,7 @@ FILE * fp;
 #define MAXNUM 32767
 #define MAXREG 32775
 uint16_t program [MAX];
-int idx;
+uint16_t idx;
 uint16_t reg[8];
 
 #define DBG 1
@@ -17,8 +17,8 @@ uint16_t reg[8];
 #define DEBUG //
 #endif
 
-int getreg(){
-  int num=program[idx];
+uint16_t getreg(){
+  uint16_t num=program[idx];
   idx++;
   if(num>MAXNUM && num <=MAXREG)
     return  num-MAXNUM;
@@ -26,7 +26,7 @@ int getreg(){
 }
 
 uint16_t getnum(){
-  int num=program[idx];
+  uint16_t num=program[idx];
   idx++;
   if(num>MAXNUM && num <=MAXREG){
     DEBUG("Reg %u\n",(num-MAXNUM));
@@ -52,7 +52,7 @@ uint16_t getnum(){
 
 
 // return: 0 - ok, 1 - halt, 2 - error
-int runcmd(){
+uint16_t runcmd(){
 	uint16_t a,b,c,d;
 	uint16_t x=getnum();
 	//if (x!=19) DEBUG("Command:%d\n",x);
