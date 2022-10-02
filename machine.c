@@ -124,7 +124,6 @@ uint16_t runcmd(){
 	case 6:
 	  //jmp: 6 a
 	  //jump to <a>
-	DEBUG("idx:%d\n",idx);
 	  idx=getnum();
 	DEBUG("jmp:%d\n",idx);
 	  break;
@@ -132,7 +131,6 @@ uint16_t runcmd(){
 	case 7:
 	  //jt: 7 a b
 	  //if <a> is nonzero, jump to <b>
-	DEBUG("idx:%d\n",idx);
 	  a=getnum();
 	  b=getnum();
 	  if (a!=0) idx=b;
@@ -142,7 +140,6 @@ uint16_t runcmd(){
 	case 8:
 	  //jf: 8 a b
 	  //if <a> is zero, jump to <b>
-	DEBUG("idx:%d\n",idx);
 	  a=getnum();
 	  b=getnum();
 	  if (a==0) idx=b;
@@ -186,6 +183,14 @@ uint16_t runcmd(){
 	  DEBUG("~%u -> %u\n",b,reg[a]);
 	  break;
 	  
+	case 17:
+	  //call: 17 a
+	  //write the address of the next instruction to the stack and jump to <a>
+	  a=getnum();
+	  push(idx);
+	  DEBUG("call %u \n",a);
+	  idx=a;
+	  break;
 
 	case 19:
 	  //out: 19 a
@@ -214,9 +219,6 @@ uint16_t runcmd(){
 	case 16:
 	  //wmem: 16 a b
 	  //write the value from <b> into memory at address <a>
-	case 17:
-	  //call: 17 a
-	  //write the address of the next instruction to the stack and jump to <a>
 	case 18:
 	  //ret: 18
 	  //remove the top element from the stack and jump to it; empty stack = halt
