@@ -54,7 +54,8 @@ uint16_t getnum(){
     num = reg[num-MAXNUM-1];
    }	
   if(num>MAXREG){
-    fail("Number too big\n");
+    printf("Got number %u from index %u\n",num,idx);
+    fail("Number out of range\n");
     num = -1;
    }
   return num;
@@ -76,7 +77,7 @@ uint16_t getnum(){
 uint16_t runcmd(){
 	uint16_t a,b,c,d;
 	uint16_t x=getnum();
-	//if (x!=19) DEBUG("Command:%d\n",x);
+	if (x!=19) DEBUG("Command:%d\n",x);
 	switch (x){
 	case 0:
 	  printf("Halt\n");
@@ -108,7 +109,8 @@ uint16_t runcmd(){
 	  a=getreg();
 	  b=getnum();
 	  c=getnum();
-	  reg[a]=b==c?1:0;
+	  if(b==c) reg[a]=1;
+	  else reg[a]=0;
 	  break;
 	case 5:
 	  //gt: 5 a b c
@@ -159,6 +161,29 @@ uint16_t runcmd(){
 	  reg[a]=d;
 	  break;
 
+	case 12:
+	  //and: 12 a b c
+	  //stores into <a> the bitwise and of <b> and <c>
+	  a=getreg();
+	  b=getnum();
+	  c=getnum();
+	  reg[a]=b&c;
+	  break;
+	case 13:
+	  //or: 13 a b c
+	  //stores into <a> the bitwise or of <b> and <c>
+	  a=getreg();
+	  b=getnum();
+	  c=getnum();
+	  reg[a]=b|c;
+	  break;
+	case 14:
+	  //not: 14 a b
+	  //stores 15-bit bitwise inverse of <b> in <a>
+	  a=getreg();
+	  b=getnum();
+	  reg[a]=~b;
+	  break;
 	  
 
 	case 19:
@@ -182,15 +207,6 @@ uint16_t runcmd(){
 	case 11:
 	  //mod: 11 a b c
 	  //store into <a> the remainder of <b> divided by <c>
-	case 12:
-	  //and: 12 a b c
-	  //stores into <a> the bitwise and of <b> and <c>
-	case 13:
-	  //or: 13 a b c
-	  //stores into <a> the bitwise or of <b> and <c>
-	case 14:
-	  //not: 14 a b
-	  //stores 15-bit bitwise inverse of <b> in <a>
 	case 15:
 	  //rmem: 15 a b
 	  //read memory at address <b> and write it to <a>
