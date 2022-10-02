@@ -205,6 +205,21 @@ uint16_t runcmd(){
 	  DEBUG("~%u -> %u\n",b,reg[a]);
 	  break;
 	  
+	case 15:
+	  //rmem: 15 a b
+	  //read memory at address <b> and write it to <a>
+	  a=getreg();
+	  b=getnum();
+	  reg[a]=program[b];
+	  break;
+
+	case 16:
+	  //wmem: 16 a b
+	  //write the value from <b> into memory at address <a>
+	  a=getnum();
+	  b=getnum();
+	  program[a]=b;
+	  break;
 	case 17:
 	  //call: 17 a
 	  //write the address of the next instruction to the stack and jump to <a>
@@ -229,12 +244,6 @@ uint16_t runcmd(){
 	  // unimplemented codes here
 
 
-	case 15:
-	  //rmem: 15 a b
-	  //read memory at address <b> and write it to <a>
-	case 16:
-	  //wmem: 16 a b
-	  //write the value from <b> into memory at address <a>
 	case 18:
 	  //ret: 18
 	  //remove the top element from the stack and jump to it; empty stack = halt
