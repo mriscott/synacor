@@ -110,6 +110,14 @@ uint16_t runcmd(){
 	  c=getnum();
 	  reg[a]=b==c?1:0;
 	  break;
+	case 5:
+	  //gt: 5 a b c
+	  //set <a> to 1 if <b> is greater than <c>; set it to 0 otherwise
+	  a=getreg();
+	  b=getnum();
+	  c=getnum();
+	  reg[a]=b>c?1:0;
+	  break;
 
 	case 6:
 	  //jmp: 6 a
@@ -167,9 +175,6 @@ uint16_t runcmd(){
 
 	  // unimplemented codes here
 
-	case 5:
-	  //gt: 5 a b c
-	  //set <a> to 1 if <b> is greater than <c>; set it to 0 otherwise
 
 	case 10:
 	  //mult: 10 a b c
