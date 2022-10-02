@@ -246,6 +246,15 @@ uint16_t runcmd(){
 	  printf("%c",a);
 	  break;
 	
+	case 20:
+	  //in: 20 a
+	  //read a character from the terminal and write its ascii code to <a>; it can be assumed that once input starts, it will continue until a newline is encountered; this means that you can safely read whole lines from the keyboard and trust that they will be fully read
+
+	  a=getreg();
+	  b=getchar();
+	  DEBUG("Writing %u into %u\n",b,a);
+	  reg[a]=b;
+	  break;
 	case 21:
 	  //noop
 	  DEBUG("noop\n");
@@ -254,9 +263,6 @@ uint16_t runcmd(){
 	  // unimplemented codes here
 
 
-	case 20:
-	  //in: 20 a
-	  //read a character from the terminal and write its ascii code to <a>; it can be assumed that once input starts, it will continue until a newline is encountered; this means that you can safely read whole lines from the keyboard and trust that they will be fully read
 
 	  // unimplemented codes fall thru
 	default:
