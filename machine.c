@@ -182,7 +182,8 @@ uint16_t runcmd(){
 	  //stores 15-bit bitwise inverse of <b> in <a>
 	  a=getreg();
 	  b=getnum();
-	  reg[a]=~b;
+	  reg[a]=((~b)&(0x7fff));
+	  DEBUG("~%u -> %u\n",b,reg[a]);
 	  break;
 	  
 
