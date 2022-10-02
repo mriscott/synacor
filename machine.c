@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 FILE * fp;
 
@@ -7,6 +8,8 @@ FILE * fp;
 #define MAXNUM 32767
 #define MAXREG 32775
 uint16_t program [MAX];
+uint16_t stack[MAX];
+uint16_t pushpop;
 uint16_t idx;
 uint16_t reg[8];
 
@@ -16,13 +19,31 @@ uint16_t reg[8];
 #define DEBUG //
 #endif
 
+void fail(char * str){
+  printf("ABORTING - %s\n",str);
+  exit(1);
+}
+
 uint16_t getreg(){
   uint16_t num=program[idx];
   idx++;
   if(num>MAXNUM && num <=MAXREG)
     return  num-MAXNUM-1;
-  printf("Invalid reg\n");
-  return -1;
+  fail("Invalid reg\n");
+  return 0;
+}
+
+void push(uint16_t i){
+  stack[pushpop]=i;
+  pushpop++;
+}
+
+uint16_t pop(){
+  if(pushpop==0){
+    fail("Fallen off the bottom of the stack");
+  }
+  pushpop--;
+  return stack[pushpop];
 }
 
 uint16_t getnum(){
@@ -33,7 +54,7 @@ uint16_t getnum(){
     num = reg[num-MAXNUM-1];
    }	
   if(num>MAXREG){
-    printf("Invalid num\n");
+    fail("Number too big\n");
     num = -1;
    }
   return num;
@@ -44,7 +65,7 @@ uint16_t getnum(){
  uint16_t  readnum(){
 	uint16_t code=0;
 	if(fread(&code,sizeof(uint16_t),1,fp)==0){
-	  return -1;
+	  fail("Read past end of file");
 	}
 	return code;
 }
@@ -70,7 +91,17 @@ uint16_t runcmd(){
 	  DEBUG ("Set %u  %u\n",a,b);
 	  reg[a]=b;
 	  break;
-
+	case 2:
+	  //push: 2 a
+	  //push <a> onto the stack
+	  push(getnum());
+	  break;
+	case 3:
+	  //pop: 3 a
+	  //remove the top element from the stack and write it into <a>; empty stack = error
+	  a=getreg();
+	  reg[a]=pop();
+	  break;
 	case 4:
 	  //eq: 4 a b c
 	  //set <a> to 1 if <b> is equal to <c>; set it to 0 otherwise
@@ -135,12 +166,7 @@ uint16_t runcmd(){
 	  break;
 
 	  // unimplemented codes here
-	case 2:
-	  //push: 2 a
-	  //push <a> onto the stack
-	case 3:
-	  //pop: 3 a
-	  //remove the top element from the stack and write it into <a>; empty stack = error
+
 	case 5:
 	  //gt: 5 a b c
 	  //set <a> to 1 if <b> is greater than <c>; set it to 0 otherwise
