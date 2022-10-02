@@ -9,4 +9,4 @@ run: machine
 
 
 clean:
-	rm machine
+	-rm machine
