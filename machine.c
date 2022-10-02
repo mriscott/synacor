@@ -229,6 +229,16 @@ uint16_t runcmd(){
 	  idx=a;
 	  break;
 
+	case 18:
+	  //ret: 18
+	  //remove the top element from the stack and jump to it; empty stack = halt
+	  if(pushpop==0) {
+		  printf("Halting due to empty stack\n");
+		  exit(0);
+	  }
+	  idx=pop();
+	  break;
+
 	case 19:
 	  //out: 19 a
 	  //write the character represented by ascii code <a> to the terminal
@@ -244,9 +254,6 @@ uint16_t runcmd(){
 	  // unimplemented codes here
 
 
-	case 18:
-	  //ret: 18
-	  //remove the top element from the stack and jump to it; empty stack = halt
 	case 20:
 	  //in: 20 a
 	  //read a character from the terminal and write its ascii code to <a>; it can be assumed that once input starts, it will continue until a newline is encountered; this means that you can safely read whole lines from the keyboard and trust that they will be fully read
