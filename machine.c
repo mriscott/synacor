@@ -158,6 +158,28 @@ uint16_t runcmd(){
 	  reg[a]=d;
 	  break;
 
+	case 10:
+	  //mult: 10 a b c
+	  //store into <a> the product of <b> and <c> (modulo 32768)
+	  a=getreg();
+	  b=getnum();
+	  c=getnum();
+	  d=b*c;
+	  d=d%32768;
+	  DEBUG("mult:%u,%u,%u : %u->%u\n",a,b,c,a,d);
+	  reg[a]=d;
+	  break;
+
+	case 11:
+	  //mod: 11 a b c
+	  //store into <a> the remainder of <b> divided by <c>
+	  a=getreg();
+	  b=getnum();
+	  c=getnum();
+	  d=b%c;
+	  DEBUG("mult:%u,%u,%u : %u->%u\n",a,b,c,a,d);
+	  reg[a]=d;
+	  break;
 	case 12:
 	  //and: 12 a b c
 	  //stores into <a> the bitwise and of <b> and <c>
@@ -207,12 +229,6 @@ uint16_t runcmd(){
 	  // unimplemented codes here
 
 
-	case 10:
-	  //mult: 10 a b c
-	  //store into <a> the product of <b> and <c> (modulo 32768)
-	case 11:
-	  //mod: 11 a b c
-	  //store into <a> the remainder of <b> divided by <c>
 	case 15:
 	  //rmem: 15 a b
 	  //read memory at address <b> and write it to <a>
