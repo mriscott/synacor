@@ -32,7 +32,7 @@ void main()
    y[3]=x[j];
    y[4]=x[k];
   a=test(y);
-  if (a>300)print(y,a);
+  if (a==399)print(y,a);
   }
   }
   }
