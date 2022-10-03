@@ -8,7 +8,7 @@ void print(int * a, int b){
   printf("=%d\n",b);
 }
 int test(int* a){
-  int d= (a[0]+(a[1]*a[2]^2+a[3]^3)-a[4]);
+  int d= (a[0]+(a[1]*a[2]*a[2]+a[3]*a[3]*a[3])-a[4]);
   return d;
 }
 void main()
@@ -32,7 +32,7 @@ void main()
    y[3]=x[j];
    y[4]=x[k];
   a=test(y);
-  if (a>3)print(y,a);
+  if (a>300)print(y,a);
   }
   }
   }
